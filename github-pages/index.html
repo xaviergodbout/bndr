@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090a0d">
+  <meta name="description" content="A private, browser-based visual organizer for Pokémon card binders.">
+  <title>Binder Studio</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">▦</span><div><strong>Binder Studio</strong><small>Visual card organizer</small></div></div>
+    <div id="card-count" class="card-count"><span></span>Empty binder</div>
+    <button id="upload-top" class="button primary">＋ <span>Upload cards</span></button>
+    <input id="file-input" type="file" multiple accept="image/jpeg,image/png,image/webp,image/avif" hidden>
+  </header>
+
+  <div id="progress-wrap" class="progress-wrap" hidden><div class="progress-track"><div id="progress-bar"></div></div><span id="progress-label"></span></div>
+
+  <main class="shell">
+    <aside class="sidebar">
+      <p class="eyebrow">Arrange</p>
+      <section>
+        <h2>Pocket layout</h2>
+        <div id="layouts" class="layout-options" role="radiogroup" aria-label="Pocket layout">
+          <button data-layout="2x2">2 × 2</button><button data-layout="3x3" class="active">3 × 3</button><button data-layout="4x3">4 × 3</button>
+        </div>
+      </section>
+
+      <section>
+        <h2>Sort cards</h2>
+        <div id="modes" class="mode-options">
+          <button data-mode="color" class="active"><span class="mode-icon violet">◉</span><span><strong>Dominant color</strong><small>Detected from each image</small></span><i></i></button>
+          <button data-mode="theme"><span class="mode-icon green">✦</span><span><strong>Theme / location</strong><small>Forest, water, home…</small></span><i></i></button>
+          <button data-mode="manual"><span class="mode-icon gray">↕</span><span><strong>Manual order</strong><small>Drag cards between pockets</small></span><i></i></button>
+        </div>
+      </section>
+
+      <section class="switch-panel">
+        <label><span><strong>Rainbow order</strong><small>Blend colors across the spectrum.</small></span><input id="rainbow" type="checkbox" checked><i></i></label>
+        <label><span><strong>Reverse order</strong><small>Flip the current sequence.</small></span><input id="reverse" type="checkbox"><i></i></label>
+      </section>
+
+      <section class="group-panel">
+        <label><span><strong>Full group pages</strong><small id="full-pages-help">Leave empty pockets before the next color.</small></span><input id="full-pages" type="checkbox"><i></i></label>
+        <p id="group-status">Continuous: every open pocket is filled.</p>
+      </section>
+
+      <button id="drop-zone" class="drop-zone"><span>⇧</span><strong>Drop card images here</strong><small>JPG, PNG, WEBP or AVIF. Select 100+ at once.</small></button>
+      <button id="reset" class="button danger-outline" disabled>↻ Reset binder</button>
+      <p class="local-note">Cards stay in this browser on this device.</p>
+    </aside>
+
+    <section class="workspace">
+      <div class="workspace-inner">
+        <div class="preview-head">
+          <div><p class="eyebrow">Preview</p><div class="title-line"><h1 id="preview-title">Color spectrum</h1><div id="group-badges" class="badges"></div></div></div>
+          <nav class="pager" aria-label="Binder pages"><button id="previous" aria-label="Previous page">‹</button><strong id="page-label">1 / 1</strong><button id="next" aria-label="Next page">›</button></nav>
+        </div>
+
+        <div id="binder" class="binder" aria-live="polite"><div id="pockets" class="pockets"></div></div>
+        <div id="page-dots" class="page-dots" aria-label="Page picker"></div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="card-dialog" class="card-dialog">
+    <button class="dialog-close" aria-label="Close">×</button>
+    <div class="dialog-image"><img id="dialog-image" alt=""></div>
+    <div class="dialog-details">
+      <h2 id="dialog-name"></h2><p>Fine-tune how this card is organized.</p>
+      <label class="field"><span>Theme / location</span><select id="theme-select"></select></label>
+      <div class="field"><span>Detected color</span><div class="detected"><i id="color-swatch"></i><div><strong id="color-name"></strong><small id="color-value"></small></div></div></div>
+      <button id="remove-card" class="button danger-outline">⌫ Remove card</button>
+    </div>
+  </dialog>
+
+  <dialog id="confirm-dialog" class="confirm-dialog"><h2 id="confirm-title"></h2><p id="confirm-copy"></p><div><button id="confirm-cancel" class="button secondary">Cancel</button><button id="confirm-action" class="button danger">Confirm</button></div></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
